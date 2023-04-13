@@ -30,6 +30,18 @@ function updateScore() {
     scoreElement.textContent = `YOU ${yourPoints} - ${computerPoints} COMPUTER`;
 }
 
+function letUserKnow(outcome, computerSelection) {
+    if(outcome == 1) {
+        outcomeElement.textContent = `You chose ${playerChoice} and the computer chose ${computerSelection}. You won.`
+    }
+    else if(outcome == 0) {
+        outcomeElement.textContent = `You chose ${playerChoice} and the computer chose ${computerSelection}. Draw.`
+    }
+    else if(outcome == -1){
+        outcomeElement.textContent = `You chose ${playerChoice} and the computer chose ${computerSelection}. You lost.`
+    }
+}
+
 
 const rockButton = document.getElementsByClassName("rock")[0];
 const paperButton = document.getElementsByClassName("paper")[0];
@@ -37,6 +49,7 @@ const scissorsButton = document.getElementsByClassName("scissors")[0];
 const submitButton = document.querySelector(`button[type="submit"]`)
 const playerChoiceElement = document.getElementById("player-choice");
 const scoreElement = document.getElementById("score");
+const outcomeElement = document.getElementById("outcome")
 
 let yourPoints = 0;
 let computerPoints = 0;
@@ -59,12 +72,18 @@ scissorsButton.addEventListener("click", () => {
 submitButton.addEventListener("click", () => {
     let computerSelection = getComputerChoice();
     if(typeof(playerChoice) === "string") {
-        console.log(playRound(playerChoice, computerSelection));
         let result = playRound(playerChoice, computerSelection)[1];
-        if(result == 1)
+        if(result == 1) {
         yourPoints++;
-        if(result == -1)
-        computerPoints++;
+        letUserKnow(1, computerSelection);
+        }
+        else if(result == -1) {
+         computerPoints++;
+         letUserKnow(-1, computerSelection);
+        }
+        else {
+         letUserKnow(0, computerSelection);
+        }
         updateScore();
     }
     else {
